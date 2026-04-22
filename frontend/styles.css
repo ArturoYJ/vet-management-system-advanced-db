@@ -1,0 +1,152 @@
+:root {
+  --bg: #f2efe8;
+  --surface: #fffdf8;
+  --text: #1f1c18;
+  --muted: #5b5348;
+  --primary: #2b6b5f;
+  --primary-strong: #1f5249;
+  --accent: #c7872d;
+  --border: #d9d1c4;
+  --danger: #b84040;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: "IBM Plex Sans", "Segoe UI", sans-serif;
+  color: var(--text);
+  background:
+    radial-gradient(circle at 0% 0%, #fff5d8 0%, transparent 35%),
+    radial-gradient(circle at 100% 100%, #d9f0ea 0%, transparent 40%),
+    var(--bg);
+}
+
+.hero {
+  padding: 24px 20px;
+  border-bottom: 1px solid var(--border);
+  background: linear-gradient(120deg, #f9f4e8, #edf8f5);
+}
+
+.hero h1 {
+  margin: 0;
+  font-family: "Bitter", Georgia, serif;
+  letter-spacing: 0.2px;
+}
+
+.hero p {
+  margin-top: 8px;
+  color: var(--muted);
+}
+
+.layout {
+  padding: 20px;
+  display: grid;
+  gap: 16px;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+}
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 16px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05);
+}
+
+.card h2 {
+  margin-top: 0;
+  font-size: 1.1rem;
+}
+
+.form-grid {
+  display: grid;
+  gap: 10px;
+}
+
+.form-grid.inline {
+  grid-template-columns: 1fr auto;
+}
+
+label {
+  display: grid;
+  gap: 5px;
+  font-size: 0.92rem;
+  color: var(--muted);
+}
+
+input,
+select,
+button {
+  font: inherit;
+}
+
+input,
+select {
+  padding: 9px 10px;
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  background: #fff;
+}
+
+button {
+  border: 0;
+  border-radius: 9px;
+  padding: 10px 14px;
+  color: #fff;
+  background: var(--primary);
+  cursor: pointer;
+}
+
+button:hover {
+  background: var(--primary-strong);
+}
+
+.status {
+  min-height: 1.2rem;
+  margin: 10px 0;
+  color: var(--muted);
+}
+
+.status.error {
+  color: var(--danger);
+}
+
+.table-wrap {
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+
+th,
+td {
+  border-bottom: 1px solid var(--border);
+  text-align: left;
+  padding: 8px 6px;
+}
+
+th {
+  color: var(--muted);
+  font-weight: 600;
+}
+
+.priority {
+  font-weight: 700;
+  color: var(--accent);
+}
+
+@media (max-width: 720px) {
+  .layout {
+    grid-template-columns: 1fr;
+  }
+
+  .form-grid.inline {
+    grid-template-columns: 1fr;
+  }
+}
