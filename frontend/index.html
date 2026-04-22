@@ -1,140 +1,140 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Veterinary Security Console</title>
-    <link rel="stylesheet" href="styles.css" />
-  </head>
-  <body>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jurassic Vet | Security Console</title>
+    <link rel="stylesheet" href="styles.css">
+    <!-- Favicon or icon link could go here -->
+</head>
+<body>
     <header class="hero">
-      <h1>Veterinary Security Console</h1>
-      <p>Role simulation for GRANT/REVOKE, RLS, SQLi hardening, and Redis cache.</p>
+        <h1>Jurassic Vet Console</h1>
+        <p>Prehistoric healthcare with advanced security: RLS, SQLi Hardening & Redis Cache.</p>
     </header>
 
     <main class="layout">
-      <section class="card">
-        <h2>1) Login (Role Switch)</h2>
-        <form id="login-form" class="form-grid">
-          <label>
-            Role
-            <select id="role" required>
-              <option value="admin">Admin</option>
-              <option value="reception">Reception</option>
-              <option value="veterinarian">Veterinarian</option>
-            </select>
-          </label>
-          <label>
-            Veterinarian ID (only veterinarian role)
-            <input id="vet-id" type="number" min="1" placeholder="1, 2, 3..." />
-          </label>
-          <button type="submit">Create Session</button>
-        </form>
-        <p id="auth-status" class="status">No active session.</p>
-      </section>
+        <!-- 1) Login (Role Switch) -->
+        <section class="card">
+            <h2>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path><polyline points="10 17 15 12 10 7"></polyline><line x1="15" y1="12" x2="3" y2="12"></line></svg>
+                Session Management
+            </h2>
+            <form id="login-form" class="form-grid">
+                <label>
+                    Access Role
+                    <select id="role" required>
+                        <option value="admin">Admin (Full Control)</option>
+                        <option value="reception">Reception (Limited)</option>
+                        <option value="veterinarian">Veterinarian (Filtered)</option>
+                    </select>
+                </label>
+                <label>
+                    Veterinarian ID
+                    <input id="vet-id" type="number" min="1" placeholder="Required for Vet role">
+                </label>
+                <button type="submit">Establish Session</button>
+            </form>
+            <p id="auth-status" class="status">Waiting for authentication...</p>
+        </section>
 
-      <section class="card">
-        <h2>2) Pet Search (SQLi Surface)</h2>
-        <form id="search-form" class="form-grid inline">
-          <input id="search-input" type="text" placeholder="Try: ' OR '1'='1" required />
-          <button type="submit">Search</button>
-        </form>
-        <div class="form-grid inline">
-          <button id="load-all-pets" type="button">Load All Visible Pets</button>
-        </div>
-        <p id="search-status" class="status"></p>
-        <div class="table-wrap">
-          <table>
-            <thead>
-              <tr>
-                <th>ID</th>
-                <th>Pet</th>
-                <th>Species</th>
-                <th>Owner</th>
-                <th>Phone</th>
-              </tr>
-            </thead>
-            <tbody id="pets-tbody"></tbody>
-          </table>
-        </div>
-      </section>
+        <!-- 2) Pet Search (SQLi Surface) -->
+        <section class="card">
+            <h2>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                Specimen Database
+            </h2>
+            <form id="search-form" class="form-grid inline">
+                <input id="search-input" type="text" placeholder="Search by name or ' SQL Injection" required>
+                <button type="submit">Query</button>
+            </form>
+            <div class="form-grid">
+                <button id="load-all-pets" type="button" style="background: rgba(255,255,255,0.05); color: var(--text-main); border: 1px solid var(--surface-border);">Load All Visible</button>
+            </div>
+            <p id="search-status" class="status"></p>
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Specimen</th>
+                            <th>Species</th>
+                            <th>Handler</th>
+                            <th>Comm Link</th>
+                        </tr>
+                    </thead>
+                    <tbody id="pets-tbody"></tbody>
+                </table>
+            </div>
+        </section>
 
-      <section class="card">
-        <h2>3) Pending Vaccination (Redis)</h2>
-        <div class="form-grid inline">
-          <button id="load-pending" type="button">Load Pending Vaccination</button>
-        </div>
-        <p id="pending-status" class="status"></p>
-        <div class="table-wrap">
-          <table>
-            <thead>
-              <tr>
-                <th>Pet</th>
-                <th>Species</th>
-                <th>Owner</th>
-                <th>Last Vaccine</th>
-                <th>Days</th>
-                <th>Priority</th>
-              </tr>
-            </thead>
-            <tbody id="pending-tbody"></tbody>
-          </table>
-        </div>
-      </section>
+        <!-- 3) Pending Vaccination (Redis) -->
+        <section class="card">
+            <h2>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                Bio-Security Alerts
+            </h2>
+            <div class="form-grid">
+                <button id="load-pending" type="button">Retrieve Pending Updates</button>
+            </div>
+            <p id="pending-status" class="status"></p>
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Specimen</th>
+                            <th>Species</th>
+                            <th>Handler</th>
+                            <th>Last Check</th>
+                            <th>Interval</th>
+                            <th>Alert</th>
+                        </tr>
+                    </thead>
+                    <tbody id="pending-tbody"></tbody>
+                </table>
+            </div>
+        </section>
 
-      <section class="card">
-        <h2>Optional: Apply Vaccine (Cache Invalidation Demo)</h2>
-        <form id="vaccine-form" class="form-grid">
-          <label>
-            Pet ID
-            <input id="v-pet-id" type="number" min="1" required />
-          </label>
-          <label>
-            Vaccine ID
-            <input id="v-vaccine-id" type="number" min="1" required />
-          </label>
-          <label>
-            Cost charged
-            <input id="v-cost" type="number" min="0" step="0.01" required />
-          </label>
-          <label>
-            Date (optional YYYY-MM-DD)
-            <input id="v-date" type="text" placeholder="2026-04-22" />
-          </label>
-          <label>
-            Veterinarian ID (required for admin)
-            <input id="v-vet-id" type="number" min="1" />
-          </label>
-          <button type="submit">Apply Vaccine</button>
-        </form>
-        <p id="vaccine-status" class="status"></p>
-      </section>
+        <!-- Optional: Apply Vaccine -->
+        <section class="card">
+            <h2>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"></path><path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"></path><path d="M9 12H4s.55-3.03 2-5c1.62-2.2 5-3 5-3"></path><path d="M12 15v5s3.03-.55 5-2c2.2-1.62 3-5 3-5"></path></svg>
+                Deploy Treatment
+            </h2>
+            <form id="vaccine-form" class="form-grid">
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                    <label>ID Specimen <input id="v-pet-id" type="number" min="1" required></label>
+                    <label>ID Treatment <input id="v-vaccine-id" type="number" min="1" required></label>
+                </div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                    <label>Credits Charged <input id="v-cost" type="number" min="0" step="0.01" required></label>
+                    <label>Deployment Date <input id="v-date" type="text" placeholder="YYYY-MM-DD"></label>
+                </div>
+                <label>Admin: Override Vet ID <input id="v-vet-id" type="number" min="1"></label>
+                <button type="submit">Execute Deployment</button>
+            </form>
+            <p id="vaccine-status" class="status"></p>
+        </section>
 
-      <section class="card">
-        <h2>Optional: Schedule Appointment</h2>
-        <form id="appointment-form" class="form-grid">
-          <label>
-            Pet ID
-            <input id="a-pet-id" type="number" min="1" required />
-          </label>
-          <label>
-            Veterinarian ID
-            <input id="a-vet-id" type="number" min="1" required />
-          </label>
-          <label>
-            Datetime (YYYY-MM-DD HH:mm:ss)
-            <input id="a-datetime" type="text" placeholder="2026-04-25 10:00:00" required />
-          </label>
-          <label>
-            Reason
-            <input id="a-reason" type="text" required />
-          </label>
-          <button type="submit">Schedule Appointment</button>
-        </form>
-        <p id="appointment-status" class="status"></p>
-      </section>
+        <!-- Optional: Schedule Appointment -->
+        <section class="card">
+            <h2>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                Protocol Scheduling
+            </h2>
+            <form id="appointment-form" class="form-grid">
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                    <label>Specimen ID <input id="a-pet-id" type="number" min="1" required></label>
+                    <label>Vet ID <input id="a-vet-id" type="number" min="1" required></label>
+                </div>
+                <label>Scheduled Slot <input id="a-datetime" type="text" placeholder="YYYY-MM-DD HH:mm:ss" required></label>
+                <label>Purpose <input id="a-reason" type="text" placeholder="Medical reason..." required></label>
+                <button type="submit">Register Protocol</button>
+            </form>
+            <p id="appointment-status" class="status"></p>
+        </section>
     </main>
 
     <script src="app.js"></script>
-  </body>
+</body>
 </html>
