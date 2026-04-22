@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Veterinary Security Console</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="hero">
+      <h1>Veterinary Security Console</h1>
+      <p>Role simulation for GRANT/REVOKE, RLS, SQLi hardening, and Redis cache.</p>
+    </header>
+
+    <main class="layout">
+      <section class="card">
+        <h2>1) Login (Role Switch)</h2>
+        <form id="login-form" class="form-grid">
+          <label>
+            Role
+            <select id="role" required>
+              <option value="admin">Admin</option>
+              <option value="reception">Reception</option>
+              <option value="veterinarian">Veterinarian</option>
+            </select>
+          </label>
+          <label>
+            Veterinarian ID (only veterinarian role)
+            <input id="vet-id" type="number" min="1" placeholder="1, 2, 3..." />
+          </label>
+          <button type="submit">Create Session</button>
+        </form>
+        <p id="auth-status" class="status">No active session.</p>
+      </section>
+
+      <section class="card">
+        <h2>2) Pet Search (SQLi Surface)</h2>
+        <form id="search-form" class="form-grid inline">
+          <input id="search-input" type="text" placeholder="Try: ' OR '1'='1" required />
+          <button type="submit">Search</button>
+        </form>
+        <div class="form-grid inline">
+          <button id="load-all-pets" type="button">Load All Visible Pets</button>
+        </div>
+        <p id="search-status" class="status"></p>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Pet</th>
+                <th>Species</th>
+                <th>Owner</th>
+                <th>Phone</th>
+              </tr>
+            </thead>
+            <tbody id="pets-tbody"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2>3) Pending Vaccination (Redis)</h2>
+        <div class="form-grid inline">
+          <button id="load-pending" type="button">Load Pending Vaccination</button>
+        </div>
+        <p id="pending-status" class="status"></p>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Pet</th>
+                <th>Species</th>
+                <th>Owner</th>
+                <th>Last Vaccine</th>
+                <th>Days</th>
+                <th>Priority</th>
+              </tr>
+            </thead>
+            <tbody id="pending-tbody"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2>Optional: Apply Vaccine (Cache Invalidation Demo)</h2>
+        <form id="vaccine-form" class="form-grid">
+          <label>
+            Pet ID
+            <input id="v-pet-id" type="number" min="1" required />
+          </label>
+          <label>
+            Vaccine ID
+            <input id="v-vaccine-id" type="number" min="1" required />
+          </label>
+          <label>
+            Cost charged
+            <input id="v-cost" type="number" min="0" step="0.01" required />
+          </label>
+          <label>
+            Date (optional YYYY-MM-DD)
+            <input id="v-date" type="text" placeholder="2026-04-22" />
+          </label>
+          <label>
+            Veterinarian ID (required for admin)
+            <input id="v-vet-id" type="number" min="1" />
+          </label>
+          <button type="submit">Apply Vaccine</button>
+        </form>
+        <p id="vaccine-status" class="status"></p>
+      </section>
+
+      <section class="card">
+        <h2>Optional: Schedule Appointment</h2>
+        <form id="appointment-form" class="form-grid">
+          <label>
+            Pet ID
+            <input id="a-pet-id" type="number" min="1" required />
+          </label>
+          <label>
+            Veterinarian ID
+            <input id="a-vet-id" type="number" min="1" required />
+          </label>
+          <label>
+            Datetime (YYYY-MM-DD HH:mm:ss)
+            <input id="a-datetime" type="text" placeholder="2026-04-25 10:00:00" required />
+          </label>
+          <label>
+            Reason
+            <input id="a-reason" type="text" required />
+          </label>
+          <button type="submit">Schedule Appointment</button>
+        </form>
+        <p id="appointment-status" class="status"></p>
+      </section>
+    </main>
+
+    <script src="app.js"></script>
+  </body>
+</html>
