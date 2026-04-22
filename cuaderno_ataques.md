@@ -128,3 +128,13 @@ Línea en logs generada:
 
 ![Invalidación de Caché](assets/redis_invalidation.png)
 Si se vuelve a consultar el listado pendiente después de esto, se observará un nuevo `MISS` porque los datos cacheados fueron correctamente invalidados.
+
+### 4) Tercera consulta después de la invalidación -> MISS de nuevo
+
+![image.png](assets/image.png)
+
+### 5) Evidencia de logs
+
+Captura completa de los `4 logs` con timestamps (en orden):
+
+![alt text](assets/image-1.png)
