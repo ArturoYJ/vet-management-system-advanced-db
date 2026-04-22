@@ -1,0 +1,10 @@
+node_modules/
+api/node_modules/
+api/dist/
+.env
+api/.env
+*.log
+
+# Archivos de referencia de clase (no son parte del entregable)
+*.pdf
+actividad_recuperacion_schema.sql
