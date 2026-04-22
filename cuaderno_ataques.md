@@ -16,6 +16,8 @@ curl -s "http://localhost:3000/api/pets/search?q=%27%20OR%20%271%27%3D%271" \
   -H "x-session-token: <vet_token>"
 ```
 
+![Ataque 1 - Escape Clásico](assets/sqli_ataque1.png)
+
 - Resultado observado: `{"rows":[]}` (sin ruptura de SQL, sin escalamiento de privilegios)
 - Líneas defensivas en el backend:
   - `api/src/server.ts:91` (`ILIKE $1`)
@@ -32,6 +34,8 @@ curl -s "http://localhost:3000/api/pets/search?q=%27%3B%20DROP%20TABLE%20mascota
   -H "x-session-token: <vet_token>"
 ```
 
+![Ataque 2 - Stacked Query](assets/sqli_ataque2.png)
+
 - Resultado observado: `{"rows":[]}` y la tabla `mascotas` permanece intacta.
 
 ### Ataque 3: Intento de UNION (Union-Based SQLi)
@@ -44,6 +48,8 @@ curl -s "http://localhost:3000/api/pets/search?q=%27%3B%20DROP%20TABLE%20mascota
 curl -s "http://localhost:3000/api/pets/search?q=%27%20UNION%20SELECT%201%2C%20%27Inyectado%27%2C%20%27Test%27%2C%20%27Hacker%27%2C%20%27123456789%27--" \
   -H "x-session-token: <vet_token>"
 ```
+
+![Ataque 3 - UNION Based](assets/sqli_ataque3.png)
 
 - Resultado observado: `{"rows":[]}` (No se devuelven las filas inyectadas porque el driver de base de datos trata el string literalmente como el valor exacto a buscar en lugar de código ejecutable).
 - Línea defensiva en el backend:
@@ -59,6 +65,7 @@ Petición:
 curl -s "http://localhost:3000/api/pets" -H "x-session-token: <vet1_token>"
 ```
 
+![RLS Veterinario 1](assets/rls_vet1.png)
 Mascotas observadas: `Rex`, `Pelusa`, `Nala`.
 
 ### Identidad: Veterinario 2 (vetId = 2)
@@ -69,6 +76,7 @@ Petición:
 curl -s "http://localhost:3000/api/pets" -H "x-session-token: <vet2_token>"
 ```
 
+![RLS Veterinario 2](assets/rls_vet2.png)
 Mascotas observadas: `Misifú`, `Luna`, `Dante`.
 
 ### Política que causa este comportamiento
@@ -88,8 +96,10 @@ Respuesta:
 Línea en logs:
 
 ```text
-[2026-04-22T03:41:12.831Z] [CACHE MISS] vaccination:pending:reception:v1 (54ms)
+[2026-04-22T03:41:12.831Z] [CACHE MISS] vaccination:pending:reception:v1 (74ms)
 ```
+
+![Redis Cache MISS](assets/redis_miss.png)
 
 ### 2) Segunda consulta inmediata -> HIT
 
@@ -102,8 +112,10 @@ Respuesta:
 Línea en logs:
 
 ```text
-[2026-04-22T03:41:14.105Z] [CACHE HIT] vaccination:pending:reception:v1 (2ms)
+[2026-04-22T03:41:14.105Z] [CACHE HIT] vaccination:pending:reception:v1 (6ms)
 ```
+
+![Redis Cache HIT](assets/redis_hit.png)
 
 ### 3) Después de aplicar una vacuna -> INVALIDACIÓN
 
@@ -114,4 +126,5 @@ Línea en logs generada:
 [2026-04-22T03:45:10.000Z] [CACHE INVALIDATE] vaccination:pending:*
 ```
 
+![Invalidación de Caché](assets/redis_invalidation.png)
 Si se vuelve a consultar el listado pendiente después de esto, se observará un nuevo `MISS` porque los datos cacheados fueron correctamente invalidados.
