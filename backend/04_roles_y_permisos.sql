@@ -48,7 +48,8 @@ ON TABLE
     inventario_vacunas,
     vacunas_aplicadas,
     historial_movimientos,
-    alertas
+    alertas,
+    v_mascotas_vacunacion_pendiente
 TO role_app_admin;
 
 GRANT SELECT
