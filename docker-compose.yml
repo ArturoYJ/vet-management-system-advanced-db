@@ -10,9 +10,9 @@ services:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
-      - ./infra/migrations:/docker-entrypoint-initdb.d/infra/migrations:ro
+      - ./schema_corte3.sql:/schema_corte3.sql:ro
       - ./backend:/docker-entrypoint-initdb.d/backend:ro
-      - ./infra/init/10_load_all.sql:/docker-entrypoint-initdb.d/10_load_all.sql:ro
+      - ./backend/10_load_all.sql:/docker-entrypoint-initdb.d/10_load_all.sql:ro
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U postgres -d clinica_vet"]
       interval: 5s
